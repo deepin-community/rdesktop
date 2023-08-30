@@ -1,0 +1,22 @@
+Description: Don't force strip the binary
+ Skip strip when asked to.
+Author: Laszlo Boszormenyi (GCS) <gcs@debian.org>
+Forwarded: not-needed
+Last-Update: 2019-10-13
+
+---
+
+--- rdesktop-1.9.0.orig/Makefile.in
++++ rdesktop-1.9.0/Makefile.in
+@@ -18,7 +18,11 @@ CC          = @CC@
+ INSTALL     = @INSTALL@
+ CFLAGS      = @CFLAGS@ @X_CFLAGS@ @DEFS@ -DKEYMAP_PATH=\"$(KEYMAP_PATH)\"
+ LDFLAGS     = @LDFLAGS@ @LIBS@ @X_LIBS@ @X_EXTRA_LIBS@
++ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+ STRIP       = @STRIP@
++else
++STRIP=/bin/true
++endif
+ 
+ TARGETS     = rdesktop
+ SOUNDOBJ    = @SOUNDOBJ@
